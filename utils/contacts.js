@@ -42,6 +42,14 @@ const checkValidationName = (name) => {
     return checkName
 }
 
+const checkValidationPhoneNumber = (phoneNumber) => {
+    let loadContacts = allContacts()
+    let checkPhoneNumber = loadContacts.find((el) => {
+        return el.phoneNumber === phoneNumber;
+    })
+    return checkPhoneNumber
+}
+
 const checkValidationEmail = (email) => {
     let loadContacts = allContacts()
     let checkEmail = loadContacts.find((el) => {
@@ -50,10 +58,50 @@ const checkValidationEmail = (email) => {
     return checkEmail
 }
 
+const deleteContact = (name) => {
+    let loadContacts = allContacts()
+    let filterContact = loadContacts.filter((el) => {
+        return el.name.toLowerCase() !== name.toLowerCase()
+    })
+    saveContact(filterContact)
+}
+
+const validationPasswordEmail = (dataToCheck) => {
+    let loadContacts = allContacts()
+    let filterContact = loadContacts.filter((el) => {
+        return el.name.toLowerCase() !== dataToCheck.name.toLowerCase()
+    })
+    let checkEmail = filterContact.find((el) => {
+        return el.email === dataToCheck.email;
+    })
+    let checkPhoneNumber = filterContact.find((el) => {
+        return el.phoneNumber === dataToCheck.phoneNumber;
+    })
+    if (checkPhoneNumber) {
+        return `Phone number must be unique`
+    }
+    if (checkEmail) {
+        return `E-mail must be unique`
+    }
+}
+
+const updateContact = (dataToUpdate, nameToUpdate) => {
+    let loadContacts = allContacts()
+    let filterContact = loadContacts.filter((el) => {
+        return el.name.toLowerCase() !== nameToUpdate.toLowerCase()
+    })
+    filterContact.push(dataToUpdate)
+    saveContact(filterContact)
+}
+
 module.exports = {
     allContacts,
     findContactByName,
     addContact,
     checkValidationName,
-    checkValidationEmail
+    checkValidationEmail,
+    checkValidationPhoneNumber,
+    deleteContact,
+    validationPasswordEmail,
+    updateContact,
 }
