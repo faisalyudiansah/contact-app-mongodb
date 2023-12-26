@@ -15,7 +15,11 @@ router.get('/', (req, res) => {
 
 router.get('/contacts', (req, res) => {
     let contacts = allContacts()
-    res.render('contacts', { layout: 'layouts/main-layout', contacts })
+    res.render('contacts', {
+        layout: 'layouts/main-layout',
+        contacts,
+        msg: req.flash('msg')
+    })
 })
 
 router.get('/detail-contact', (req, res) => {
@@ -57,6 +61,7 @@ router.post(
         }
         let { name, phoneNumber, email } = req.body
         addContact({ name, phoneNumber, email })
+        req.flash('msg', 'Data added successfully!')
         res.redirect('/contacts')
     })
 

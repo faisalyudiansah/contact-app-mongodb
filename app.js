@@ -14,6 +14,15 @@ app.use(expressLayouts)
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 
+app.use(cookieParser('secret'))
+app.use(session({
+    cookie: { maxAge: 60000 },
+    secret: 'secret',
+    resave: true,
+    saveUninitialized: true,
+}))
+app.use(flash())
+
 app.use(router)
 
 app.listen(port, () => {
