@@ -38,8 +38,8 @@ async function main() {
         // ])
 
         //=================================================================== Show Contact
-        // const showData = await db.collection('Users').find().toArray()
-        // console.log(showData)
+        const showData = await db.collection('Users').find().toArray()
+        console.log(showData)
 
         //=================================================================== Show Contact By Name
         // const showData = await db.collection('Users').find({
@@ -103,18 +103,18 @@ async function main() {
         // console.log(deleteOne)
 
         //=================================================================== Delete Many Contact By ID
-        const objectIds = [
-            new ObjectId('658c3c78a2bfb6f206efc33b'), 
-            new ObjectId('658c3c78a2bfb6f206efc33c'), 
-        ]
-        const updateMany = await db.collection('Users').deleteMany(
-            {
-                _id: {
-                    $in: objectIds
-                }
-            }
-        )
-        console.log(updateMany)
+        // const objectIds = [
+        //     new ObjectId('658c3c78a2bfb6f206efc33b'), 
+        //     new ObjectId('658c3c78a2bfb6f206efc33c'), 
+        // ]
+        // const updateMany = await db.collection('Users').deleteMany(
+        //     {
+        //         _id: {
+        //             $in: objectIds
+        //         }
+        //     }
+        // )
+        // console.log(updateMany)
     } catch (error) {
         console.log(error)
     } finally {
