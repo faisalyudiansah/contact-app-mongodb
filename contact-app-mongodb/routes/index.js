@@ -84,21 +84,26 @@ router.post(
         res.redirect('/contacts')
     })
 
-router.get('/delete-contact', (req, res) => {
-    const { name } = req.query
-    let findContact = findContactByName(name)
+router.get('/delete-contact', async (req, res) => {
+    let findContact = await Contact.findOne({
+        name: req.query.name
+    })
     if (!findContact) {
         req.flash('msgError', 'Request Invalid')
         return res.redirect('/contacts')
     }
-    deleteContact(name)
+    await Contact.deleteOne({
+        _id: findContact._id
+    })
     req.flash('msgSuccess', 'Contact successfully deleted')
     return res.redirect('/contacts')
 })
 
-router.get('/edit-contact', (req, res) => {
-    const { name, errors } = req.query
-    let findContact = findContactByName(name)
+router.get('/edit-contact', async (req, res) => {
+    const { errors } = req.query
+    let findContact = await Contact.findOne({
+        name: req.query.name
+    })
     if (!findContact) {
         req.flash('msgError', 'Request Invalid')
         return res.redirect('/contacts')
