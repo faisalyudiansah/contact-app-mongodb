@@ -43,7 +43,7 @@ router.get('/add-contact', (req, res) => {
 })
 
 router.post(
-    '/add-contact',
+    '/contact',
     body('name', 'Name is required').notEmpty(),
     body('phoneNumber', 'Phone Number is required').notEmpty(),
     body('email', 'E-mail is required').notEmpty(),
@@ -111,8 +111,8 @@ router.get('/edit-contact', async (req, res) => {
     res.render('edit-contact', { layout: 'layouts/main-layout', findContact, errors })
 })
 
-router.post(
-    '/edit-contact',
+router.put(
+    '/contact',
     body('name', 'Name is required').notEmpty(),
     body('phoneNumber', 'Phone Number is required').notEmpty(),
     body('email', 'E-mail is required').notEmpty(),
