@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Cristiano Ronaldo",
+    "phoneNumber": "081367589944",
+    "email": "ronaldo@gmail.com"
+  },
+  {
+    "name": "Neymar",
+    "phoneNumber": "082149400971",
+    "email": "neymar@gmail.com"
+  },
+  {
+    "name": "Ricardo Kaka",
+    "phoneNumber": "088649480834",
+    "email": "kaka@gmail.com"
+  },
+  {
+    "name": "Sergio Ramos",
+    "phoneNumber": "081357111733",
+    "email": "ramos@gmail.com"
+  },
+  {
+    "name": "Pogba",
+    "phoneNumber": "083173991010",
+    "email": "pogba@gmail.com"
+  }
+]
