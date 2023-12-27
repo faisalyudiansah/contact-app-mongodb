@@ -20,8 +20,8 @@ router.get('/', (req, res) => {
     res.render('home', { layout: 'layouts/main-layout' })
 })
 
-router.get('/contacts', (req, res) => {
-    let contacts = Contact.find()
+router.get('/contacts', async (req, res) => {
+    let contacts = await Contact.find()
     res.render('contacts', {
         layout: 'layouts/main-layout',
         contacts,
@@ -30,9 +30,10 @@ router.get('/contacts', (req, res) => {
     })
 })
 
-router.get('/detail-contact', (req, res) => {
-    const { name } = req.query
-    let contact = findContactByName(name)
+router.get('/detail-contact', async (req, res) => {
+    let contact = await Contact.findOne({
+        name: req.query.name
+    })
     res.render('detail-contact', { layout: 'layouts/main-layout', contact })
 })
 
@@ -110,7 +111,7 @@ router.post(
     body('name', 'Name is required').notEmpty(),
     body('phoneNumber', 'Phone Number is required').notEmpty(),
     body('email', 'E-mail is required').notEmpty(),
-    body('name').custom((value, {req}) => {
+    body('name').custom((value, { req }) => {
         const validationName = checkValidationName(value)
         if (value !== req.query.nameToUpdate && validationName) {
             throw new Error('Name already exists')
@@ -136,7 +137,7 @@ router.post(
 
         let { name, phoneNumber, email } = req.body
         let checkValidation = validationPasswordEmail({ name, phoneNumber, email })
-        if(checkValidation){
+        if (checkValidation) {
             return res.redirect(`/edit-contact?name=${nameToUpdate}&errors=${checkValidation}`)
         }
         updateContact({ name, phoneNumber, email }, nameToUpdate)
