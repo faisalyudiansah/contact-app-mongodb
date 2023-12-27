@@ -84,7 +84,7 @@ router.post(
         res.redirect('/contacts')
     })
 
-router.delete('/delete-contact', async (req, res) => {
+router.delete('/contact', async (req, res) => {
     let findContact = await Contact.findOne({
         name: req.query.name
     })

@@ -6,9 +6,11 @@ const port = 3000
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const flash = require('connect-flash')
+const methodOverride = require('method-override')
 const router = require('./routes');
 
 app.use(cors())
+app.use(methodOverride('_method'))
 app.set('view engine', 'ejs')
 app.use(expressLayouts)
 app.use(express.static('public'))

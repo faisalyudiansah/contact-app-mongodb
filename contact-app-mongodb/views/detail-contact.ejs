@@ -14,7 +14,9 @@
                     <h6 class="card-subtitle mb-1 text-body-secondary">Phone Number : <%= contact.phoneNumber %></h6>
                     <p class="card-text">Email : <%= contact.email %></p>
                     <a href="/edit-contact?name=<%= contact.name %>" class="btn btn-dark rounded card-link">Edit</a>
-                    <a href="/delete-contact?name=<%= contact.name %>" onclick="return confirm('Delete this contact?')" class="btn btn-danger rounded card-link">Delete</a>
+                    <form action="/contact?name=<%= contact.name %>&_method=DELETE" method="POST" class="d-inline">
+                        <button type="submit" onclick="return confirm('Delete this contact?')" class="btn btn-danger rounded card-link">Delete</button>
+                    </form>
                     <a href="/contacts" class="btn btn-secondary rounded card-link">Back</a>
                 </div>
             </div>
