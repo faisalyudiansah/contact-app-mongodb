@@ -84,7 +84,7 @@ router.post(
         res.redirect('/contacts')
     })
 
-router.get('/delete-contact', async (req, res) => {
+router.delete('/delete-contact', async (req, res) => {
     let findContact = await Contact.findOne({
         name: req.query.name
     })
@@ -116,8 +116,8 @@ router.post(
     body('name', 'Name is required').notEmpty(),
     body('phoneNumber', 'Phone Number is required').notEmpty(),
     body('email', 'E-mail is required').notEmpty(),
-    body('name').custom((value, { req }) => {
-        const validationName = checkValidationName(value)
+    body('name').custom(async (value, { req }) => {
+        const validationName = await Contact.findOne({ name: value })
         if (value !== req.query.nameToUpdate && validationName) {
             throw new Error('Name already exists')
         }
@@ -125,9 +125,11 @@ router.post(
     }),
     check('email', 'Email Invalid').isEmail(),
     check('phoneNumber', 'Phone Number Invalid').isMobilePhone('id-ID'),
-    (req, res) => {
+    async (req, res) => {
         const { nameToUpdate } = req.query
-        let findContact = findContactByName(nameToUpdate)
+        let findContact = await Contact.findOne({
+            name: nameToUpdate
+        })
         if (!findContact) {
             req.flash('msgError', 'Request Invalid')
             return res.redirect('/contacts')
