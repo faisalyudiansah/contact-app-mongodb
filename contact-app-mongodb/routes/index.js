@@ -47,22 +47,22 @@ router.post(
     body('name', 'Name is required').notEmpty(),
     body('phoneNumber', 'Phone Number is required').notEmpty(),
     body('email', 'E-mail is required').notEmpty(),
-    body('name').custom((value) => {
-        const validationName = checkValidationName(value)
+    body('name').custom(async (value) => {
+        const validationName = await Contact.findOne({ name: value })
         if (validationName) {
             throw new Error('Name already exists')
         }
         return true
     }),
-    body('phoneNumber').custom((value) => {
-        const validationPhoneNumber = checkValidationPhoneNumber(value)
+    body('phoneNumber').custom(async (value) => {
+        const validationPhoneNumber = await Contact.findOne({ phoneNumber: value })
         if (validationPhoneNumber) {
             throw new Error('Phone Number already exists')
         }
         return true
     }),
-    body('email').custom((value) => {
-        const validationEmail = checkValidationEmail(value)
+    body('email').custom(async (value) => {
+        const validationEmail = await Contact.findOne({ email: value })
         if (validationEmail) {
             throw new Error('E-mail already exists')
         }
@@ -70,7 +70,7 @@ router.post(
     }),
     check('email', 'Email Invalid').isEmail(),
     check('phoneNumber', 'Phone Number Invalid').isMobilePhone('id-ID'),
-    (req, res) => {
+    async (req, res) => {
         const errors = validationResult(req)
         if (!errors.isEmpty()) {
             let errorMsg = errors.array().map(el => {
@@ -79,7 +79,7 @@ router.post(
             return res.redirect(`/add-contact?errors=${errorMsg}`)
         }
         let { name, phoneNumber, email } = req.body
-        addContact({ name, phoneNumber, email })
+        await Contact.insertMany({ name, phoneNumber, email })
         req.flash('msgSuccess', 'Contact added successfully!')
         res.redirect('/contacts')
     })
