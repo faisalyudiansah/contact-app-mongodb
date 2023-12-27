@@ -11,7 +11,10 @@
                     </ul>
                 </div>
             <% } %>
-            <form class="mt-4" method="post" action="/edit-contact?nameToUpdate=<%= findContact.name %>">
+            <form 
+                class="mt-4" 
+                method="post" 
+                action="/contact?nameToUpdate=<%= findContact.name %>&phToUpdate=<%= findContact.phoneNumber %>&emailToUpdate=<%= findContact.email %>&_method=PUT">
                 <div class="mb-3">
                     <label for="name" class="form-label">Name</label>
                     <input type="text" value="<%= findContact.name %>" required name="name" class="form-control border-2" id="name">

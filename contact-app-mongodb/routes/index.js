@@ -1,16 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {
-    allContacts,
-    findContactByName,
-    addContact,
-    checkValidationName,
-    checkValidationEmail,
-    checkValidationPhoneNumber,
-    deleteContact,
-    validationPasswordEmail,
-    updateContact,
-} = require('../utils/contacts');
+const validationPasswordEmail = require('../utils/contacts');
 const { body, validationResult, check } = require('express-validator')
 
 require('../utils/db')
@@ -123,6 +113,20 @@ router.put(
         }
         return true
     }),
+    body('phoneNumber').custom(async (value, { req }) => {
+        const validationPhoneNumber = await Contact.findOne({ phoneNumber: value })
+        if (value !== req.query.phToUpdate && validationPhoneNumber) {
+            throw new Error('Phone Number already exists')
+        }
+        return true
+    }),
+    body('email').custom(async (value, { req }) => {
+        const validationEmail = await Contact.findOne({ email: value })
+        if (value !== req.query.emailToUpdate && validationEmail) {
+            throw new Error('E-mail already exists')
+        }
+        return true
+    }),
     check('email', 'Email Invalid').isEmail(),
     check('phoneNumber', 'Phone Number Invalid').isMobilePhone('id-ID'),
     async (req, res) => {
@@ -143,11 +147,15 @@ router.put(
         }
 
         let { name, phoneNumber, email } = req.body
-        let checkValidation = validationPasswordEmail({ name, phoneNumber, email })
-        if (checkValidation) {
-            return res.redirect(`/edit-contact?name=${nameToUpdate}&errors=${checkValidation}`)
-        }
-        updateContact({ name, phoneNumber, email }, nameToUpdate)
+
+        await Contact.updateOne(
+            {
+                name: nameToUpdate
+            },
+            {
+                $set: { name, phoneNumber, email }
+            }
+        )
         req.flash('msgSuccess', 'Contact has been updated')
         return res.redirect('/contacts')
     })
